@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Species Gallery & ID</title><link rel="stylesheet" href="/css/styles.css"></head>
+<body>
+  <a class="back" href="/dashboard">← Back</a>
+  <div style="max-width:1100px;margin:20px auto;padding:18px;border-radius:10px;background:rgba(255,255,255,0.02);">
+    <h1>Species Gallery & Identification (manual)</h1>
+    <p>Click a sample image to view details, or upload an image and select which species it most closely matches from the list.</p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="width:220px;">
+        <img src="https://alfirdoosfishfarm.com/wp-content/uploads/2025/06/Rohu.png" alt="Rohu" style="width:100%;border-radius:8px;cursor:pointer;" data-spec="Rohu">
+        <div style="text-align:center;color:#fff;margin-top:6px;">Rohu</div>
+      </div>
+      <div style="width:220px;">
+        <img src="https://www.shutterstock.com/image-photo/fresh-water-catla-katla-fish-600nw-2475947397.jpg" alt="Catla" style="width:100%;border-radius:8px;cursor:pointer;" data-spec="Catla">
+        <div style="text-align:center;color:#fff;margin-top:6px;">Catla</div>
+      </div>
+      <div style="width:220px;">
+        <img src="https://bombayfreshfish.com/wp-content/uploads/2022/10/Tiger-OS-LR-e1665066847187.jpg" alt="Tiger Shrimp" style="width:85%;border-radius:8px;cursor:pointer;" data-spec="Tiger Shrimp">
+        <div style="text-align:center;color:#fff;margin-top:6px;">Tiger Shrimp</div>
+      </div>
+    </div>
+
+    <hr style="margin:16px 0;border-color:rgba(255,255,255,0.03)">
+
+    <div style="display:flex;gap:18px;align-items:flex-start;">
+      <div style="flex:1;">
+        <h3>Upload image to identify (manual)</h3>
+        <input type="file" id="upload" accept="image/*"><br>
+        <div id="preview" style="margin-top:8px;"></div>
+        <label for="choose">If your image matches one of the known species, choose it:</label>
+        <select id="choose">
+          <option value="">-- choose species --</option>
+          <option>Rohu</option>
+          <option>Catla</option>
+          <option>Tiger Shrimp</option>
+        </select>
+        <button id="matchBtn">Show match</button>
+      </div>
+
+      <div style="width:360px; background: rgba(0,0,0,0.12); padding:12px; border-radius:8px;">
+        <h3>Species Details</h3>
+        <div id="specInfo">Click a sample or upload & choose a species to see details here.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const info = {
+      'Rohu': { scientific: 'Labeo rohita', notes: 'Common Indian carp. Freshwater, widely cultured.' },
+      'Catla': { scientific: 'Gibelion catla', notes: 'Large head carp, popular in South Asia.' },
+      'Tiger Shrimp': { scientific: 'Penaeus monodon', notes: 'Brackish-water shrimp, high market value.' }
+    };
+
+    document.querySelectorAll('img[data-spec]').forEach(img=>{
+      img.addEventListener('click', ()=> {
+        const s = img.getAttribute('data-spec');
+        document.getElementById('specInfo').innerHTML = `<h4>${s}</h4><p><strong>Scientific name:</strong> ${info[s].scientific}</p><p>${info[s].notes}</p>`;
+      });
+    });
+
+    document.getElementById('upload').addEventListener('change', (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      const url = URL.createObjectURL(file);
+      const prev = document.getElementById('preview');
+      prev.innerHTML = `<img src="${url}" style="max-width:100%; border-radius:8px;">`;
+    });
+
+    document.getElementById('matchBtn').addEventListener('click', ()=>{
+      const chosen = document.getElementById('choose').value;
+      if(!chosen) { alert('Choose a species from the list'); return; }
+      const d = info[chosen];
+      document.getElementById('specInfo').innerHTML = `<h4>${chosen}</h4><p><strong>Scientific name:</strong> ${d.scientific}</p><p>${d.notes}</p><p><em>Note:</em> This is a manual identification helper — no ML model is used. Compare visually or use this as a checklist.</p>`;
+    });
+  </script>
+</body>
+</html>

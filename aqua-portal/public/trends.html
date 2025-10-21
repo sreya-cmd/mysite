@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Feed Trends</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="back" href="/dashboard">← Back</a>
+  <div style="max-width:1000px;margin:20px auto;background: rgba(255,255,255,0.02); padding:18px; border-radius:10px;">
+    <h1>Feed Consumption Trends</h1>
+    <div style="margin-bottom:10px;">
+      <button id="exportCsv">Export CSV</button>
+      <button id="exportPdf">Export PDF</button>
+    </div>
+    <canvas id="trendChart" width="900" height="360"></canvas>
+  </div>
+  <script>
+    async function loadTrends(){
+      const r = await fetch('/api/trends');
+      const data = await r.json();
+      const labels = data.map(d => d.day);
+      const daily = data.map(d => d.daily_feed_kg);
+      const optimal = data.map(d => d.optimal_feed_kg);
+      const ctx = document.getElementById('trendChart').getContext('2d');
+      window._chart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets: [
+          { label: 'Daily Feed (kg)', data: daily, fill:true, tension:0.3 },
+          { label: 'Optimal Feed (kg)', data: optimal, fill:false, tension:0.3 }
+        ]},
+        options: { responsive:true }
+      });
+
+      // setup export buttons
+      document.getElementById('exportCsv').addEventListener('click', ()=>{
+        const rows = [['Day','DailyFeedKG','OptimalFeedKG'], ...data.map(d=> [d.day, d.daily_feed_kg, d.optimal_feed_kg])];
+        const csv = rows.map(r=> r.map(c=> '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+        const blob = new Blob([csv], {type: 'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'feed_trends.csv'; a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      document.getElementById('exportPdf').addEventListener('click', async ()=>{
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(14);
+        doc.text('Feed Consumption Trends', 14, 20);
+        doc.setFontSize(11);
+        let y = 30;
+        data.forEach(d=>{
+          doc.text(`${d.day}: Daily ${d.daily_feed_kg} kg — Optimal ${d.optimal_feed_kg} kg`, 14, y);
+          y += 8;
+        });
+        doc.save('feed_trends.pdf');
+      });
+    }
+    loadTrends();
+  </script>
+</body>
+</html>

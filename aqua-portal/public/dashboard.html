@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Aqua Portal - Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h2>Smart Feed Management Dashboard</h2>
+    <div>
+      <button id="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <section style="max-width:1100px; margin:18px auto;">
+      <div style="background: linear-gradient(180deg, rgba(0,160,180,0.06), rgba(0,120,150,0.04)); padding:18px; border-radius:12px; color:#fff;">
+        
+        
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <a class="card" href="/feed.html">Feed Calculator (Fish & Shrimp)</a>
+      <a class="card" href="/trends.html">Feed Consumption Trends</a>
+      <a class="card" href="/env.html">Environmental Metrics</a>
+      <a class="card" href="/market.html">Market Prices</a>
+      <a class="card" href="/species.html">Species Gallery & ID</a>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      await fetch('/api/logout', { method:'POST' });
+      window.location = '/';
+    });
+
+    // Canvas fish animation
+    const canvas = document.getElementById('decorCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    class Fish {
+      constructor(imgSrc, y, speed, scale, flip) {
+        this.img = new Image();
+        this.img.src = imgSrc;
+        this.x = Math.random() * canvas.width;
+        this.y = y;
+        this.speed = speed;
+        this.scale = scale;
+        this.flip = flip; // 1 or -1
+      }
+      draw(dt) {
+        const w = this.img.width * this.scale;
+        const h = this.img.height * this.scale;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        if (this.flip < 0) ctx.scale(-1,1);
+        ctx.drawImage(this.img, -w/2, -h/2, w, h);
+        ctx.restore();
+        this.x += this.speed * dt * this.flip;
+        if (this.x > canvas.width + 100) this.x = -100;
+        if (this.x < -100) this.x = canvas.width + 100;
+      }
+    }
+
+    const fishes = [
+      new Fish('/images/fish1.png', canvas.height*0.3, 0.04, 0.2, 1),
+      new Fish('/images/fish2.png', canvas.height*0.6, 0.03, 0.22, -1),
+      new Fish('/images/fish1.png', canvas.height*0.5, 0.05, 0.15, 1)
+    ];
+
+    let last = performance.now();
+    function loop(now) {
+      const dt = now - last;
+      last = now;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // subtle wave background
+      ctx.fillStyle = 'rgba(2,45,60,0.12)';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      for (let f of fishes) {
+        f.draw(dt);
+      }
+      requestAnimationFrame(loop);
+    }
+    // wait images load a bit
+    setTimeout(()=> requestAnimationFrame(loop), 200);
+  </script>
+</body>
+</html>

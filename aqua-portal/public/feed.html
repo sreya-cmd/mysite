@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Feed Calculator</title><link rel="stylesheet" href="/css/styles.css"></head>
+<body>
+  <a class="back" href="/dashboard">← Back</a>
+  <div style="max-width:900px;margin:24px auto;padding:20px; border-radius:10px;">
+    <h1>Feed Calculator (grams)</h1>
+
+    <!-- species selector -->
+    <div class="form-row">
+      <label for="species">Select Species Type</label>
+      <select id="species">
+        <option value="">-- Choose --</option>
+        <option value="fish">Fishes</option>
+        <option value="shrimp">Shrimps</option>
+      </select>
+    </div>
+
+    <form id="feed-form" style="margin-top:8px;">
+      <!-- common fields -->
+      <div id="common-fields">
+        <div class="form-row">
+          <label for="avgW">Average body weight (grams)</label>
+          <input id="avgW" type="number" step="0.01" placeholder="e.g. 25">
+        </div>
+
+        <div class="form-row">
+          <label for="feedRate">Feed rate (%)</label>
+          <input id="feedRate" type="number" step="0.01" placeholder="e.g. 3.5">
+        </div>
+
+        <div class="form-row">
+          <label for="number">Number of animals</label>
+          <input id="number" type="number" placeholder="e.g. 1000">
+        </div>
+      </div>
+
+      <!-- fish-specific -->
+      <div id="fish-fields" style="display:none;">
+        <div class="form-row">
+          <label for="fish-type">Type of fish</label>
+          <select id="fish-type">
+            <option value="">-- select fish --</option>
+            <option value="tilapia">Tilapia</option>
+            <option value="catla">Catla</option>
+            <option value="rohu">Rohu</option>
+            <option value="mackerel">Mackerel</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="temp">Water temperature (°C)</label>
+          <input id="temp" type="number" step="0.1" placeholder="e.g. 28">
+        </div>
+      </div>
+
+      <!-- shrimp-specific -->
+      <div id="shrimp-fields" style="display:none;">
+        <div class="form-row">
+          <label for="shrimp-type">Type of shrimp</label>
+          <select id="shrimp-type">
+            <option value="">-- select shrimp --</option>
+            <option value="vannamei">Penaeus vannamei</option>
+            <option value="monodon">Penaeus monodon</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="salinity">Salinity (ppt)</label>
+          <input id="salinity" type="number" step="0.1" placeholder="e.g. 15">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <button type="button" id="calc">Calculate Feed</button>
+      </div>
+    </form>
+
+    <div id="result" style="margin-top:14px;"></div>
+  </div>
+
+<script>
+document.getElementById('species').addEventListener('change', function(){
+  const v = this.value;
+  document.getElementById('fish-fields').style.display = v==='fish' ? 'block' : 'none';
+  document.getElementById('shrimp-fields').style.display = v==='shrimp' ? 'block' : 'none';
+});
+
+// hide formula (originally displayed)
+const formulaEl = document.querySelector('p');
+if(formulaEl) formulaEl.classList.add('hide-formula');
+
+document.getElementById('calc').addEventListener('click', function(){
+  const avgW = parseFloat(document.getElementById('avgW').value) || 0;
+  const feedRate = parseFloat(document.getElementById('feedRate').value) || 0;
+  const number = parseInt(document.getElementById('number').value) || 0;
+  // basic calculation: total feed grams = avgW * (feedRate/100) * number
+  const total = avgW * (feedRate/100) * number;
+  document.getElementById('result').innerHTML = '<strong>Total feed required:</strong> ' + total.toFixed(2) + ' grams';
+});
+</script>
+</body>
+</html>

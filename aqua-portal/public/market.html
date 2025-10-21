@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Market Prices</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #026873 0%, #028a8a 100%);
+      color: white;
+    }
+
+    h1, h2 {
+      text-align: left;
+      color: #fff;
+    }
+
+    .market-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 14px;
+      border-radius: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .market-item:hover {
+      transform: scale(1.02);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .market-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #fff;
+    }
+
+    a.back {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      margin: 10px 0 20px 20px;
+    }
+  </style>
+</head>
+<body>
+  <a class="back" href="/dashboard">← Back</a>
+  <div style="max-width:900px;margin:20px auto;padding:18px; border-radius:10px;">
+    <h1>Market Prices (INR)</h1>
+
+    <h2>Fishes</h2>
+    <div id="fish-list"></div>
+
+    <h2>Shrimps</h2>
+    <div id="shrimp-list"></div>
+  </div>
+
+  <script>
+    const fishes = [
+      { name: 'Rohu', price: 220, img: 'https://alfirdoosfishfarm.com/wp-content/uploads/2025/06/Rohu.png' },
+      { name: 'Catla', price: 200, img: 'https://www.shutterstock.com/image-photo/fresh-water-catla-katla-fish-600nw-2475947397.jpg' },
+      { name: 'Tilapia', price: 180, img: 'https://t4.ftcdn.net/jpg/05/94/29/27/360_F_594292775_lxNOLnAIOAeelJmQPcuIuZimVQ4IQnbb.jpg' },
+      { name: 'Mackerel', price: 160, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu9pQ6QTx9QanTrcAsX6Mr4GCEiUhD9rIGVw&s' },
+      {name: 'Pulasa', price: 2999, img:   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsPwZy0Y06GyTXTy4XC_CNO7TrPQPcvKUCmw&s'},
+    ];
+
+    const shrimps = [
+      { name: 'Tiger Shrimp', price: 450, img: 'https://bombayfreshfish.com/wp-content/uploads/2022/10/Tiger-OS-LR-e1665066847187.jpg' },
+      { name: 'Vannamei (small)', price: 380, img: 'https://img2.exportersindia.com/product_images/bc-small/dir_3/88674/vannamei-shrimps-1487858.jpg' },
+      {name: 'King shrimp', price: 600, img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbdq_sFyxMr7Jt_uiOYRwXGTWikj2iGZOXAMup9-9u1cV5UIy4YFTpfqC9hJWjp_zDuks&usqp=CAU'},
+      {name: 'Flower tail', price: 300, img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVyRI2cJZLvFwWUtImjTLRb6DaqLkksg_nyw&s'}
+    ];
+
+    function renderList(containerId, items) {
+      const c = document.getElementById(containerId);
+      c.innerHTML = '';
+      for (let it of items) {
+        const el = document.createElement('div');
+        el.className = 'market-item';
+        el.innerHTML = `
+          <img src="${it.img}" alt="${it.name}">
+          <div>
+            <strong>${it.name}</strong><br>
+            Market price: ₹ ${it.price.toFixed(2)} / kg
+          </div>
+        `;
+        c.appendChild(el);
+      }
+    }
+
+    renderList('fish-list', fishes);
+    renderList('shrimp-list', shrimps);
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+/* Styles for aqua-portal starter */
+:root{
+  --teal:#06b58a;
+  --card-bg: rgba(255,255,255,0.06);
+  --glass: rgba(255,255,255,0.06);
+}
+body,html { height:100%; margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:linear-gradient(180deg,#012b3a 0%, #004a67 60%); color:#fff;}
+.login-page { display:flex; align-items:center; justify-content:center; overflow:hidden; }
+
+.ocean-bg { position:fixed; inset:0; background: radial-gradient(circle at 20% 10%, rgba(0,150,200,0.12), transparent 20%), url('https://static.euronews.com/articles/stories/04/76/47/46/1440x810_cmsv2_8626267e-4040-5c4b-8e8c-ae96e3618b33-4764746.jpg') center/cover no-repeat; z-index:0; opacity:0.95; }
+.auth-card{ position:relative; z-index:2; width:380px; max-width:92%; background: var(--glass); padding:28px; border-radius:14px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); backdrop-filter: blur(8px); color:white; border: 1px solid rgba(255,255,255,0.06); }
+.auth-card h1{ margin:0 0 6px; font-size:22px; letter-spacing:0.2px; }
+.auth-card p{ margin:0 0 12px; font-size:13px; color:#d6faff; }
+.auth-card input{ width:100%; padding:12px; margin:8px 0; border-radius:8px; border: none; background: rgba(255,255,255,0.08); color:#fff; outline:none; box-sizing:border-box; }
+.auth-card button{ width:100%; padding:12px; margin-top:10px; border-radius:8px; border: none; background:var(--teal); color:#fff; font-weight:700; cursor:pointer; box-shadow: 0 6px 16px rgba(0,0,0,0.35); }
+.msg { margin-top:8px; font-size:13px; color:#ffddcc }
+
+.fish { position:fixed; width:120px; opacity:0.95; z-index:1; pointer-events:none; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5)); }
+.fish1 { top:28%; left:-160px; animation: swim-right 18s linear infinite; transform: scaleX(1); }
+.fish2 { top:60%; right:-160px; animation: swim-left 22s linear infinite; transform: scaleX(-1); }
+
+@keyframes swim-right {
+  0% { left:-220px; transform: translateY(0) scaleX(1) rotate(0deg); }
+  50% { transform: translateY(-18px) scaleX(1) rotate(3deg); }
+  100% { left:120%; transform: translateY(0) scaleX(1) rotate(0deg); }
+}
+@keyframes swim-left {
+  0% { right:-220px; transform: translateY(0) scaleX(-1) rotate(0deg); }
+  50% { transform: translateY(18px) scaleX(-1) rotate(-3deg); }
+  100% { right:120%; transform: translateY(0) scaleX(-1) rotate(0deg); }
+}
+
+/* Dashboard styles */
+.topbar{ display:flex; align-items:center; justify-content:space-between; padding:18px 26px; background: linear-gradient(90deg, rgba(2,73,104,0.6), rgba(0,120,140,0.35)); color:#fff; }
+.grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:18px; padding:24px; max-width:1100px; margin:28px auto; }
+.card{ display:flex; align-items:center; justify-content:center; min-height:140px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border-radius:14px; color:#fff; text-decoration:none; font-weight:700; box-shadow: 0 6px 26px rgba(2,45,60,0.4); transition: transform .22s ease, box-shadow .22s ease; border:1px solid rgba(255,255,255,0.03); }
+.card:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.6); }
+
+/* Tables */
+table{ width:100%; border-collapse:collapse; background: rgba(255,255,255,0.02); color:#fff; }
+th,td{ padding:10px 12px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.03); }
+
+/* small helpers */
+a.back{ display:inline-block; margin:14px; color:#fff; text-decoration:none; }
+
+
+/* New dashboard background using underwater image */
+body {
+  background-image: url('https://img.freepik.com/free-photo/gradient-blue-abstract-background-smooth-dark-blue-with-black-vignette-studio_1258-67810.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-attachment: fixed;
+  color: #f4fbff;
+}
+
+/* Make form fields clearer and spaced with one-line gap */
+.form-row { display:block; margin-bottom:14px; }
+.form-row label { display:block; margin-bottom:6px; font-weight:600; }
+.form-row input, .form-row select { width:100%; padding:10px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #fff; }
+
+/* Market list style */
+.market-item { display:flex; align-items:center; gap:12px; padding:10px; border-radius:8px; background: rgba(255,255,255,0.02); margin-bottom:12px; }
+.market-item img { width:72px; height:72px; object-fit:cover; border-radius:6px; }
+
+/* Hide formula display */
+.hide-formula { display:none !important; }
+
+/* Remove overview heading spacing if present */
+#overview-section { display:none; }
+
+/* Improve card contrast */
+.card { background: linear-gradient(180deg, rgba(0,60,80,0.16), rgba(0,20,40,0.12)); }
+
